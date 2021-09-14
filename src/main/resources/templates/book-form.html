@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <title>Book Directory</title>
+</head>
+
+<body>
+<div class="container">
+    <h3>Book Directory</h3>
+    <hr>
+
+    <p class="h4 mb-4">Save Book</p>
+
+    <form action="#" th:action="@{/books/save}"
+          th:object="${book}" method="POST">
+
+        <input type="text" th:field="*{title}" class="form-control mb-4 col-4" placeholder="Book Title">
+        <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"  style="font-weight: bold; color: red"></p>
+        <input type="text" th:field="*{isbn}" class="form-control mb-4 col-4" placeholder="ISBN">
+        <p th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"  style="font-weight: bold; color: red" ></p>
+
+        <fieldset id="authors">
+            <div th:each="author, stat : ${book.authors}">
+                <label th:for="|book.authors[${stat.index}].firstName|">FirstName</label>
+                <input th:field="${book.authors[__${stat.index}__].firstName}">
+
+                <span th:if="${#fields.hasErrors('${book.authors[__${stat.index}__].firstName}')}" th:errors="${book.authors[__${stat.index}__].firstName}" style="font-weight: bold; color: red"></span>
+
+                <label th:for="|book.authors[${stat.index}].lastName|">LastName</label>
+                <input th:field="${book.authors[__${stat.index}__].lastName}">
+
+                <span th:if="${#fields.hasErrors('${book.authors[__${stat.index}__].lastName}')}" th:errors="${book.authors[__${stat.index}__].lastName}" style="font-weight: bold; color: red" ></span>
+            </div>
+        </fieldset>
+
+        <button type="submit" class="btn btn-info col-2"> Save </button>
+    </form>
+
+    <a th:href="@{/books/list}"> Back to Books list</a>
+
+</div>
+</body>
+</html>
